@@ -1,7 +1,8 @@
-#include <math.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+#define CCGEOHASH_DIV .001373291015625f // 360 / 2^18
 
 typedef struct s_geohash
 {
@@ -45,13 +46,11 @@ void generate_hash(CCGeohashStruct *geohash)
 
 void generate_coordinates(CCGeohashStruct *geohash)
 {
-    double divlongitude = 360.0f / powf(2, sizeof(geohash->hash));
-    double divlatitude = 180.0f / powf(2, sizeof(geohash->hash) - 1);
-    geohash->longitude = (double)geohash->longitudebits * divlongitude + divlongitude / 2.0f - 180.0f;
-    geohash->latitude = (double)geohash->latitudebits * divlatitude + divlatitude / 2.0f - 90.0f;
+    geohash->longitude = (double)geohash->longitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 180.0f;
+    geohash->latitude = (double)geohash->latitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 90.0f;
 }
 
-CCGeohashStruct init_neighboor(CCGeohashStruct *geohash, int longitude, int latitude)
+CCGeohashStruct init_neighbour(CCGeohashStruct *geohash, int longitude, int latitude)
 {
     CCGeohashStruct result = *geohash;
 
@@ -86,8 +85,8 @@ void init_from_hash(CCGeohashStruct *geohash)
 
 void init_from_coordinates(CCGeohashStruct *geohash)
 {
-    geohash->longitudebits = (geohash->longitude + 180.0f) / (360.0f / powf(2, sizeof(geohash->hash)));
-    geohash->latitudebits = (geohash->latitude + 90.0f) / (180.0f / powf(2, sizeof(geohash->hash) - 1));
+    geohash->longitudebits = (geohash->longitude + 180.0f) / CCGEOHASH_DIV;
+    geohash->latitudebits = (geohash->latitude + 90.0f) / CCGEOHASH_DIV;
 
     generate_hash(geohash);
 }
@@ -102,24 +101,18 @@ int main(int ac, char **av)
     init_from_coordinates(&geohash);
     printf("initial: %f %f %s\n", geohash.latitude, geohash.longitude, geohash.hash);
 
-    print_binary(geohash.longitudebits);
-    print_binary(geohash.latitudebits);
-
     init_from_hash(&geohash);
     printf("revert: %f %f %s\n", geohash.latitude, geohash.longitude, geohash.hash);
 
-    print_binary(geohash.longitudebits);
-    print_binary(geohash.latitudebits);
+    CCGeohashStruct neighbourgeohash = init_neighbour(&geohash, 1, 0);
+    printf("neighbour: %f %f %s\n", neighbourgeohash.latitude, neighbourgeohash.longitude, neighbourgeohash.hash);
 
-    CCGeohashStruct neighboorgeohash = init_neighboor(&geohash, 1, 0);
-    printf("neighboor: %f %f %s\n", neighboorgeohash.latitude, neighboorgeohash.longitude, neighboorgeohash.hash);
+    neighbourgeohash = init_neighbour(&geohash, 0, 1);
+    printf("neighbour: %f %f %s\n", neighbourgeohash.latitude, neighbourgeohash.longitude, neighbourgeohash.hash);
 
-    neighboorgeohash = init_neighboor(&geohash, 0, 1);
-    printf("neighboor: %f %f %s\n", neighboorgeohash.latitude, neighboorgeohash.longitude, neighboorgeohash.hash);
+    neighbourgeohash = init_neighbour(&geohash, 0, 2);
+    printf("neighbour: %f %f %s\n", neighbourgeohash.latitude, neighbourgeohash.longitude, neighbourgeohash.hash);
 
-    neighboorgeohash = init_neighboor(&geohash, 0, 2);
-    printf("neighboor: %f %f %s\n", neighboorgeohash.latitude, neighboorgeohash.longitude, neighboorgeohash.hash);
-
-    neighboorgeohash = init_neighboor(&geohash, 2, 0);
-    printf("neighboor: %f %f %s\n", neighboorgeohash.latitude, neighboorgeohash.longitude, neighboorgeohash.hash);
+    neighbourgeohash = init_neighbour(&geohash, 2, 0);
+    printf("neighbour: %f %f %s\n", neighbourgeohash.latitude, neighbourgeohash.longitude, neighbourgeohash.hash);
 }
