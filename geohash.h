@@ -7,11 +7,11 @@ typedef struct s_geohash
     double latitude;
     double longitude;
     
-    uint32_t latitudebits;
-    uint32_t longitudebits;
-    
     char hash[18];
     
+    uint32_t latitudebits;
+    uint32_t longitudebits;
+
 } CCGeohashStruct;
 
 // creates a neighbour from another geohash

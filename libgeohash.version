@@ -1,0 +1,4 @@
+GEOHASH {
+    global:init_neighbour; init_from_hash; init_from_coordinates;
+    local: *; 
+};
