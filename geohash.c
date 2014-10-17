@@ -6,6 +6,8 @@
 #define CCGEOHASH_DIV .001373291015625f // 360 / 2^18
 
 
+/* private functions */
+
 void generate_hash(CCGeohashStruct *geohash)
 {
     uint8_t iter = sizeof(geohash->hash) - 1;
@@ -27,6 +29,8 @@ void generate_coordinates(CCGeohashStruct *geohash)
     geohash->longitude = (double)geohash->longitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 180.0f;
     geohash->latitude = (double)geohash->latitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 90.0f;
 }
+
+/* public functions */
 
 CCGeohashStruct init_neighbour(CCGeohashStruct *geohash, int longitude, int latitude)
 {
@@ -68,5 +72,4 @@ void init_from_coordinates(CCGeohashStruct *geohash)
 
     generate_hash(geohash);
 }
-
 

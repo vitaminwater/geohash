@@ -1,13 +1,15 @@
 #ifndef GEOHASH_H
 #define GEOHASH_H
 
+#define MAX_GEOHASH_LENGTH 17
+
 typedef struct s_geohash
 {
     
     double latitude;
     double longitude;
     
-    char hash[18];
+    char hash[MAX_GEOHASH_LENGTH + 1];
     
     uint32_t latitudebits;
     uint32_t longitudebits;
