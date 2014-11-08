@@ -1,6 +1,9 @@
 #ifndef GEOHASH_H
 #define GEOHASH_H
 
+#include <stdint.h>
+#include <stdbool.h>
+
 #define MAX_GEOHASH_LENGTH 17
 
 typedef struct s_geohash

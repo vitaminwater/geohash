@@ -1,6 +1,3 @@
-#include <stdint.h>
-#include <stdbool.h>
-
 #include "geohash.h"
 
 #define CCGEOHASH_DIV .001373291015625f // 360 / 2^18
