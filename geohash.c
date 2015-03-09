@@ -23,8 +23,8 @@ void generate_hash(CCGeohashStruct *geohash)
 
 void generate_coordinates(CCGeohashStruct *geohash)
 {
-    geohash->longitude = (double)geohash->longitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 180.0f;
-    geohash->latitude = (double)geohash->latitudebits * CCGEOHASH_DIV + CCGEOHASH_DIV / 2.0f - 90.0f;
+    geohash->longitude = (double)geohash->longitudebits * CCGEOHASH_DIV - 180.0f;
+    geohash->latitude = (double)geohash->latitudebits * CCGEOHASH_DIV - 90.0f;
 }
 
 /* public functions */
