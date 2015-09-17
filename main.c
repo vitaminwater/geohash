@@ -24,8 +24,6 @@ int main(int ac, char **av)
     }
     CCGeohashStruct geohash;
     if (ac == 3) {
-        CCGeohashStruct geohash;
-
         geohash.latitude = atof(av[1]);
         geohash.longitude = atof(av[2]);
 
